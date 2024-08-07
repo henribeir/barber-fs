@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Criando as tabelas relacionais do BD
 model User {
   id        String    @id @default(uuid())
   email     String
@@ -21,13 +17,12 @@ model User {
 }
 
 model Barbershop {
-  //meu id vai ser string e vai ser gerada de forma aleatoria (uuid)
   id          String              @id @default(uuid())
-  email       String
   name        String
-  phone       String[]
+  address     String
+  phones      String[]
   description String
-  ImageUrl    String
+  imageUrl    String
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
   services    BarbershopService[]
@@ -37,22 +32,22 @@ model BarbershopService {
   id           String     @id @default(uuid())
   name         String
   description  String
-  ImageUrl     String
-  // meu preço vai ter 10 casas antes da virgula e 2 depois
+  imageUrl     String
   price        Decimal    @db.Decimal(10, 2)
   barbershopId String
-  //Barbeshop vai referenciar ID da tabela Barbershop
   barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
   bookings     Booking[]
 }
 
 model Booking {
   id        String            @id @default(uuid())
-  userID    String
-  user      User              @relation(fields: [userID], references: [id])
-  serviceID String
-  service   BarbershopService @relation(fields: [serviceID], references: [id])
+  userId    String
+  user      User              @relation(fields: [userId], references: [id])
+  serviceId String
+  service   BarbershopService @relation(fields: [serviceId], references: [id])
   date      DateTime
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
 }
+
+
